@@ -87,6 +87,10 @@
                 <action android:name="com.pixplicity.adb.OPEN" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="cb7ab6c28552bf25b9c45e17100b55d0e3a8686a" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

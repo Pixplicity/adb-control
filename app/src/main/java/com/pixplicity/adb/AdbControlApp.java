@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import io.fabric.sdk.android.Fabric;
 
 public class AdbControlApp extends Application {
 
@@ -50,8 +54,15 @@ public class AdbControlApp extends Application {
 
     private static final int MAX_LINES = 50;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        Fabric.with(this, new Crashlytics());
+    }
+
     protected static RootResponse runRoot(RootTask task, Context context,
-            String className, String... commands) {
+                                          String className, String... commands) {
         RootResponse retval = RootResponse.FAILURE;
         Log.v(TAG, "su with " + commands.length + " command(s)");
 
