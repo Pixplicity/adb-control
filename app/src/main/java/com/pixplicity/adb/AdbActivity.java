@@ -1,8 +1,5 @@
 package com.pixplicity.adb;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -18,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -304,12 +302,18 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
         if (isFinishing()) {
             return;
         }
-        Builder dialog = new AlertDialog.Builder(AdbActivity.this)
+        final AlertDialog.Builder dialog;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            dialog = new AlertDialog.Builder(AdbActivity.this, R.style.AlertDialogStyle);
+        } else {
+            dialog = new AlertDialog.Builder(AdbActivity.this);
+        }
+        dialog.setTitle(R.string.root_title)
                 .setMessage(R.string.root_denied);
         if (execution != null || showHelp) {
             dialog.setPositiveButton(showHelp ? R.string.bt_help1
                     : R.string.bt_retry,
-                    new Dialog.OnClickListener() {
+                    new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (showHelp) {
@@ -322,7 +326,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
         }
         dialog.setNegativeButton(execution == null ? R.string.bt_ok
                 : R.string.bt_cancel,
-                new Dialog.OnClickListener() {
+                new AlertDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
