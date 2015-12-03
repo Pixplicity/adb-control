@@ -2,7 +2,7 @@
     android:initialLayout="@layout/widget2_provider"
     android:minHeight="36dp"
     android:minResizeHeight="36dp"
-    android:minResizeWidth="72dp"
-    android:minWidth="108dp"
+    android:minResizeWidth="96dp"
+    android:minWidth="144dp"
     android:resizeMode="horizontal"
     android:updatePeriodMillis="0" />
