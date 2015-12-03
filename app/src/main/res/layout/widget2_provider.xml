@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/appwidget_button_left"
-            android:contentDescription="@string/bt_enable"
+            android:contentDescription="@string/adb_enable"
             android:src="@drawable/ic_dialog_start" />
 
         <ImageButton
@@ -45,7 +45,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/appwidget_button_right"
-            android:contentDescription="@string/bt_disable"
+            android:contentDescription="@string/adb_disable"
             android:src="@drawable/ic_dialog_stop" />
     </LinearLayout>
 

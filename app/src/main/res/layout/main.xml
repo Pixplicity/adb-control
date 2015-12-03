@@ -79,7 +79,7 @@
             android:drawableStart="@drawable/ic_dialog_start"
             android:paddingEnd="42dp"
             android:paddingRight="42dp"
-            android:text="@string/bt_enable"/>
+            android:text="@string/adb_enable"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_disable"
@@ -90,7 +90,7 @@
             android:drawableStart="@drawable/ic_dialog_stop"
             android:paddingEnd="42dp"
             android:paddingRight="42dp"
-            android:text="@string/bt_disable"/>
+            android:text="@string/adb_disable"/>
 
         <View
             android:layout_width="0dp"
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text="@string/bt_help1"
+                android:text="@string/help_root"
                 tools:ignore="RtlHardcoded"/>
 
             <android.support.v7.widget.AppCompatButton
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_weight="1"
-                android:text="@string/bt_help2"
+                android:text="@string/help_adb"
                 tools:ignore="RtlHardcoded"/>
 
         </LinearLayout>

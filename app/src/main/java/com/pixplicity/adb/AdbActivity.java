@@ -253,7 +253,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
     protected void updateAdb(String pid) {
         mPbAdb.setVisibility(View.GONE);
         if (pid == null) {
-            mBtnEnable.setText(R.string.bt_enable);
+            mBtnEnable.setText(R.string.adb_enable);
             mBtnEnable.setCompoundDrawablesWithIntrinsicBounds(
                     getResources().getDrawable(R.drawable.ic_dialog_start),
                     null, null, null);
@@ -261,7 +261,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
             mLbAdb2.setText("");
             mLbAdb2.setVisibility(View.GONE);
         } else {
-            mBtnEnable.setText(R.string.bt_restart);
+            mBtnEnable.setText(R.string.adb_restart);
             mBtnEnable.setCompoundDrawablesWithIntrinsicBounds(
                     getResources().getDrawable(R.drawable.ic_dialog_restart),
                     null, null, null);
@@ -307,8 +307,8 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                         .setTitle(R.string.root_title)
                         .setMessage(R.string.root_denied);
         if (execution != null || showHelp) {
-            dialog.setPositiveButton(showHelp ? R.string.bt_help1
-                            : R.string.bt_retry,
+            dialog.setPositiveButton(showHelp ? R.string.help_root
+                            : R.string.retry,
                     new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -320,8 +320,8 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                         }
                     });
         }
-        dialog.setNegativeButton(execution == null ? R.string.bt_ok
-                        : R.string.bt_cancel,
+        dialog.setNegativeButton(execution == null ? R.string.ok
+                        : R.string.cancel,
                 new AlertDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

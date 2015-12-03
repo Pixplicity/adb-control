@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ADB Control</string>
+    <string name="description">Deze app vereenvoudigt het inschakelen, herstarten en uitschakelen van ADB.</string>
+    <string name="adb_enable">ADB inschakelen</string>
+    <string name="adb_restart">ADB herstarten</string>
+    <string name="adb_disable">ADB uitschakelen</string>
+    <string name="adb_checking">ADB wordt gecontroleerd…</string>
+    <string name="adb_running">ADB draait</string>
+    <string name="adb_not_running">ADB draait niet</string>
+    <string name="help_root">Wat is \'root\'?</string>
+    <string name="help_adb">Wat is ADB?</string>
+    <string name="busy">Commandos worden uitgevoerd…</string>
+    <string name="pid">pid %s</string>
+    <string name="root_title">Root permissies</string>
+    <string name="root_denied">Root permissies zijn niet vrijgegeven. Voor het in- en uitschakelen van services, moet deze app commandos uitvoeren als root.</string>
+    <string name="root_not_available">Uw toestel lijkt niet geroot te zijn. Deze app moet commandos uitvoeren met verhoogde permissies.</string>
+    <string name="root_failed">De root commando kon niet uitgevoerd worden.</string>
+    <string name="retry">Opnieuw</string>
+    <string name="cancel">Annuleren</string>
+    <string name="ok">OK</string>
+    <string name="permission">Staat de applicatie toe om foutopsporingsmodus te beheren zonder uw tussenkomen. Foutopsporingsmodus kan gebruikt worden om gegevens tussen up computer en toestel uit te wisselen, applicaties op uw toestel te installeren zonder daar bericht van te krijgen, of logs uit te lezen.</string>
+
+    <string name="info_link">Meer open source van Pixplicity:\nhttp://github.com/Pixplicity</string>
+
+    <!-- Widgets -->
+    <string name="widget1_name">ADB Control (1 knop)</string>
+    <string name="widget2_name">ADB Control (2 knoppen)</string>
+
+</resources>

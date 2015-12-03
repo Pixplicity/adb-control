@@ -3,23 +3,23 @@
 
     <string name="app_name">ADB Control</string>
     <string name="description">This app allows you to easily enable, restart or disable ADB.</string>
-    <string name="bt_enable">Enable ADB</string>
-    <string name="bt_restart">Restart ADB</string>
-    <string name="bt_disable">Disable ADB</string>
-    <string name="bt_help1">What is root?</string>
-    <string name="bt_help2">What is ADB?</string>
-    <string name="busy">Running commands…</string>
+    <string name="adb_enable">Enable ADB</string>
+    <string name="adb_restart">Restart ADB</string>
+    <string name="adb_disable">Disable ADB</string>
     <string name="adb_checking">Checking ADB…</string>
     <string name="adb_running">ADB is running</string>
     <string name="adb_not_running">ADB is not running</string>
+    <string name="help_root">What is root?</string>
+    <string name="help_adb">What is ADB?</string>
+    <string name="busy">Running commands…</string>
     <string name="pid">pid %s</string>
     <string name="root_title">Root permissions</string>
     <string name="root_denied">Root permissions weren\'t granted. In order to start and stop services, this app needs to run commands as root.</string>
     <string name="root_not_available">Your device does not appear to be rooted. This app needs to run commands with elevated permissions.</string>
     <string name="root_failed">The root command failed to execute.</string>
-    <string name="bt_retry">Retry</string>
-    <string name="bt_cancel">Cancel</string>
-    <string name="bt_ok">OK</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
     <string name="permission">Allows the application to control debug mode without your intervention. Debug mode can be used to copy data between your computer and your device, install applications on your device without notification, and read log data.</string>
 
     <string name="info_link">More open source from Pixplicity:\nhttp://github.com/Pixplicity</string>

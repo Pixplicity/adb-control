@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/appwidget_button_wide"
-            android:contentDescription="@string/bt_enable"
+            android:contentDescription="@string/adb_enable"
             android:src="@drawable/ic_dialog_start" />
     </LinearLayout>
 

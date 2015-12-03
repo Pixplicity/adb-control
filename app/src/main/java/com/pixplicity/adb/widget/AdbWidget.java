@@ -184,10 +184,10 @@ public abstract class AdbWidget extends AppWidgetProvider {
         final int resImg, resText;
         if (pid == null) {
             resImg = R.drawable.ic_dialog_start;
-            resText = R.string.bt_enable;
+            resText = R.string.adb_enable;
         } else {
             resImg = R.drawable.ic_dialog_restart;
-            resText = R.string.bt_restart;
+            resText = R.string.adb_restart;
         }
         views.setInt(R.id.button1, "setImageResource", resImg);
         /* FIXME doesn't appear to work on older devices
