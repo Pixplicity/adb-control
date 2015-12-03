@@ -41,7 +41,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
+                         int[] appWidgetIds) {
         if (!USE_ALARMS) {
             Intent intent = new Intent(context, AdbService.class);
             intent.putExtra("widgets", appWidgetIds);
@@ -61,15 +61,15 @@ public abstract class AdbWidget extends AppWidgetProvider {
                     getLayout());
             views.setOnClickPendingIntent(
                     R.id.icon,
-                    makePendingIntent(context, AdbControlApp.ACTION_OPEN,
+                    makePendingIntent(context, IntentType.ACTIVITY, AdbControlApp.ACTION_OPEN,
                             appWidgetId));
             views.setOnClickPendingIntent(
                     R.id.button1,
-                    makePendingIntent(context, AdbControlApp.ACTION_ENABLE,
+                    makePendingIntent(context, IntentType.SERVICE, AdbControlApp.ACTION_ENABLE,
                             appWidgetId));
             views.setOnClickPendingIntent(
                     R.id.button2,
-                    makePendingIntent(context, AdbControlApp.ACTION_DISABLE,
+                    makePendingIntent(context, IntentType.SERVICE, AdbControlApp.ACTION_DISABLE,
                             appWidgetId));
 
             // Tell the AppWidgetManager to perform an update on the current app
@@ -170,7 +170,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
     }
 
     protected void updateStatus(Context context, int buttonBusy,
-            RootResponse response) {
+                                RootResponse response) {
         AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(context);
 
@@ -180,49 +180,49 @@ public abstract class AdbWidget extends AppWidgetProvider {
                 getLayout());
 
         switch (buttonBusy) {
-        case 1:
-            // TODO
-            break;
-        case 2:
-            // TODO
-            break;
+            case 1:
+                // TODO
+                break;
+            case 2:
+                // TODO
+                break;
         }
         switch (buttonBusy) {
-        case 1:
-        case 2:
-            for (int button : getButtons()) {
-                views.setViewVisibility(button, View.GONE);
-            }
-            views.setViewVisibility(R.id.progress, View.VISIBLE);
-            break;
-        default:
-            if (HANDLE_RESPONSE && response != null) {
-                switch (response) {
-                case SUCCESS:
-                    break;
-                case DENIED1:
-                case DENIED2:
-                    Toast.makeText(context,
-                            context.getString(R.string.root_denied),
-                            Toast.LENGTH_LONG).show();
-                    break;
-                case NO_SU:
-                    Toast.makeText(context,
-                            context.getString(R.string.root_not_available),
-                            Toast.LENGTH_LONG).show();
-                    break;
-                case FAILURE:
-                    Toast.makeText(context,
-                            context.getString(R.string.root_failed),
-                            Toast.LENGTH_LONG).show();
-                    break;
+            case 1:
+            case 2:
+                for (int button : getButtons()) {
+                    views.setViewVisibility(button, View.GONE);
                 }
-            }
-            views.setViewVisibility(R.id.progress, View.GONE);
-            for (int button : getButtons()) {
-                views.setViewVisibility(button, View.VISIBLE);
-            }
-            break;
+                views.setViewVisibility(R.id.progress, View.VISIBLE);
+                break;
+            default:
+                if (HANDLE_RESPONSE && response != null) {
+                    switch (response) {
+                        case SUCCESS:
+                            break;
+                        case DENIED1:
+                        case DENIED2:
+                            Toast.makeText(context,
+                                    context.getString(R.string.root_denied),
+                                    Toast.LENGTH_LONG).show();
+                            break;
+                        case NO_SU:
+                            Toast.makeText(context,
+                                    context.getString(R.string.root_not_available),
+                                    Toast.LENGTH_LONG).show();
+                            break;
+                        case FAILURE:
+                            Toast.makeText(context,
+                                    context.getString(R.string.root_failed),
+                                    Toast.LENGTH_LONG).show();
+                            break;
+                    }
+                }
+                views.setViewVisibility(R.id.progress, View.GONE);
+                for (int button : getButtons()) {
+                    views.setViewVisibility(button, View.VISIBLE);
+                }
+                break;
         }
 
         // define the componenet for self
@@ -247,7 +247,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
             }
             return;
         }
-        PendingIntent newPending = makePendingIntent(context,
+        PendingIntent newPending = makePendingIntent(context, IntentType.SERVICE,
                 AdbControlApp.ACTION_REQUEST_UPDATE, appWidgetId);
         AlarmManager alarms = (AlarmManager) context
                 .getSystemService(Context.ALARM_SERVICE);
@@ -262,49 +262,47 @@ public abstract class AdbWidget extends AppWidgetProvider {
         }
     }
 
-    public static PendingIntent makePendingIntent(Context context,
-            String action, int appWidgetId) {
-        IntentType type = IntentType.BROADCAST;
-        Intent intent;
+    public static PendingIntent makePendingIntent(Context context, IntentType type,
+                                                  String action, int appWidgetId) {
+        Intent intent = null;
         int flags = 0;
-        if (action.equals(AdbControlApp.ACTION_REQUEST_UPDATE)) {
-            // Start a service
-            intent = new Intent(context, AdbService.class);
-            type = IntentType.SERVICE;
-        } else if (action.equals(AdbControlApp.ACTION_OPEN)) {
-            // Start an activity
-            intent = new Intent(context, AdbActivity.class);
-            type = IntentType.ACTIVITY;
-        } else {
-            // Simply broadcast the command
-            intent = new Intent(action);
+        switch (type) {
+            case SERVICE:
+                intent = new Intent(context, AdbService.class);
+                break;
+            case ACTIVITY:
+                intent = new Intent(context, AdbActivity.class);
+                break;
+            case BROADCAST:
+                intent = new Intent(action);
+                break;
         }
         intent.putExtra("widget", appWidgetId);
         intent.setAction(action);
         switch (type) {
-        case SERVICE:
-        case ACTIVITY:
-            flags |= PendingIntent.FLAG_UPDATE_CURRENT;
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            // this Uri data is to make the PendingIntent unique, so it wont be
-            // updated by FLAG_UPDATE_CURRENT so if there are multiple widget
-            // instances they wont override each other
-            Uri data = Uri.withAppendedPath(
-                    Uri.parse("adbwidget://widget/id/#" + action
-                            + appWidgetId), String.valueOf(appWidgetId));
-            intent.setData(data);
-            break;
+            case SERVICE:
+            case ACTIVITY:
+                flags |= PendingIntent.FLAG_UPDATE_CURRENT;
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                // this Uri data is to make the PendingIntent unique, so it wont be
+                // updated by FLAG_UPDATE_CURRENT so if there are multiple widget
+                // instances they wont override each other
+                Uri data = Uri.withAppendedPath(
+                        Uri.parse("adbwidget://widget/id/#" + action
+                                + appWidgetId), String.valueOf(appWidgetId));
+                intent.setData(data);
+                break;
         }
         switch (type) {
-        case SERVICE:
-            return PendingIntent
-                    .getService(context, 0, intent, flags);
-        case ACTIVITY:
-            return PendingIntent
-                    .getActivity(context, 0, intent, flags);
-        case BROADCAST:
-            return PendingIntent
-                    .getBroadcast(context, 0, intent, flags);
+            case SERVICE:
+                return PendingIntent
+                        .getService(context, 0, intent, flags);
+            case ACTIVITY:
+                return PendingIntent
+                        .getActivity(context, 0, intent, flags);
+            case BROADCAST:
+                return PendingIntent
+                        .getBroadcast(context, 0, intent, flags);
         }
         return null;
     }
