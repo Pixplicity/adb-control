@@ -272,6 +272,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
                 break;
             case ACTIVITY:
                 intent = new Intent(context, AdbActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 break;
             case BROADCAST:
                 intent = new Intent(action);
