@@ -145,7 +145,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                                 mProgress.dismiss();
                             }
                             RootResponse response = (RootResponse) intent
-                                    .getSerializableExtra("response");
+                                    .getSerializableExtra(AdbService.EXTRA_RESPONSE);
                             Log.i(TAG, "completion result: " + response);
                             switch (response) {
                             case SUCCESS:

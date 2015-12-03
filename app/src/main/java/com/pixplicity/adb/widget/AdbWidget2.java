@@ -16,4 +16,5 @@ public class AdbWidget2 extends AdbWidget {
                 R.id.button2
         };
     }
+
 }

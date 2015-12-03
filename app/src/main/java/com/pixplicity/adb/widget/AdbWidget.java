@@ -8,7 +8,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -48,9 +50,12 @@ public abstract class AdbWidget extends AppWidgetProvider {
             context.startService(intent);
         }
 
+        Log.d(TAG, "update widgets");
+
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
         for (int appWidgetId : appWidgetIds) {
+            Log.d(TAG, "update widget " + appWidgetId);
             if (USE_ALARMS) {
                 setAlarm(context, appWidgetId, true);
             }
@@ -59,6 +64,30 @@ public abstract class AdbWidget extends AppWidgetProvider {
             // to the button
             RemoteViews views = new RemoteViews(context.getPackageName(),
                     getLayout());
+            updateRemoteViews(context, appWidgetId, views);
+
+            // Tell the AppWidgetManager to perform an update on the current app
+            // widget
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+        }
+    }
+
+    private void updateRemoteViews(Context context, int appWidgetId, RemoteViews views) {
+        // Faster operation for HC and up
+        if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            views.setOnClickFillInIntent(
+                    R.id.icon,
+                    makeIntent(context, IntentType.ACTIVITY, AdbControlApp.ACTION_OPEN,
+                            appWidgetId));
+            views.setOnClickFillInIntent(
+                    R.id.button1,
+                    makeIntent(context, IntentType.SERVICE, AdbControlApp.ACTION_ENABLE,
+                            appWidgetId));
+            views.setOnClickFillInIntent(
+                    R.id.button2,
+                    makeIntent(context, IntentType.SERVICE, AdbControlApp.ACTION_DISABLE,
+                            appWidgetId));
+        } else {
             views.setOnClickPendingIntent(
                     R.id.icon,
                     makePendingIntent(context, IntentType.ACTIVITY, AdbControlApp.ACTION_OPEN,
@@ -71,16 +100,12 @@ public abstract class AdbWidget extends AppWidgetProvider {
                     R.id.button2,
                     makePendingIntent(context, IntentType.SERVICE, AdbControlApp.ACTION_DISABLE,
                             appWidgetId));
-
-            // Tell the AppWidgetManager to perform an update on the current app
-            // widget
-            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 
     @Override
     public void onEnabled(Context context) {
-        updateStatus(context, 0, null);
+        updateStatus(context, 0, 0, null);
     }
 
     @Override
@@ -124,14 +149,15 @@ public abstract class AdbWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Log.i(TAG, "[AdbWidget] received action " + action);
+        int widgetId = intent.getIntExtra(AdbService.EXTRA_WIDGET_ID, 0);
         if (AdbControlApp.ACTION_UPDATED.equals(action)) {
             updateAdb(context, intent.getStringExtra("pid"));
         } else if (AdbControlApp.ACTION_COMPLETE.equals(action)) {
-            updateStatus(context, 0,
-                    (RootResponse) intent.getSerializableExtra("response"));
+            updateStatus(context, 0, widgetId,
+                    (RootResponse) intent.getSerializableExtra(AdbService.EXTRA_RESPONSE));
         } else if (AdbControlApp.ACTION_ENABLE.equals(action)
                 || AdbControlApp.ACTION_DISABLE.equals(action)) {
-            updateStatus(context, 1, null);
+            updateStatus(context, 1, widgetId, null);
         } else {
             super.onReceive(context, intent);
         }
@@ -143,8 +169,8 @@ public abstract class AdbWidget extends AppWidgetProvider {
 
         // Get the layout for the App Widget and attach an on-click listener
         // to the button
-        RemoteViews views = new RemoteViews(context.getPackageName(),
-                getLayout());
+        RemoteViews views = new RemoteViews(context.getPackageName(), getLayout());
+        updateRemoteViews(context, 0, views);
 
         final int resImg, resText;
         if (pid == null) {
@@ -160,7 +186,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
                 context.getString(resText));
         */
 
-        // define the componenet for self
+        // define the component for self
         ComponentName comp = new ComponentName(context.getPackageName(),
                 getClass().getName());
 
@@ -169,24 +195,16 @@ public abstract class AdbWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(comp, views);
     }
 
-    protected void updateStatus(Context context, int buttonBusy,
+    protected void updateStatus(Context context, int buttonBusy, int widgetId,
                                 RootResponse response) {
         AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(context);
 
         // Get the layout for the App Widget and attach an on-click listener
         // to the button
-        RemoteViews views = new RemoteViews(context.getPackageName(),
-                getLayout());
+        RemoteViews views = new RemoteViews(context.getPackageName(), getLayout());
+        updateRemoteViews(context, 0, views);
 
-        switch (buttonBusy) {
-            case 1:
-                // TODO
-                break;
-            case 2:
-                // TODO
-                break;
-        }
         switch (buttonBusy) {
             case 1:
             case 2:
@@ -196,7 +214,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
                 views.setViewVisibility(R.id.progress, View.VISIBLE);
                 break;
             default:
-                if (HANDLE_RESPONSE && response != null) {
+                if ((HANDLE_RESPONSE || widgetId == 0) && response != null) {
                     switch (response) {
                         case SUCCESS:
                             break;
@@ -264,36 +282,10 @@ public abstract class AdbWidget extends AppWidgetProvider {
 
     public static PendingIntent makePendingIntent(Context context, IntentType type,
                                                   String action, int appWidgetId) {
-        Intent intent = null;
+        Intent intent = makeIntent(context, type, action, appWidgetId);
         int flags = 0;
-        switch (type) {
-            case SERVICE:
-                intent = new Intent(context, AdbService.class);
-                break;
-            case ACTIVITY:
-                intent = new Intent(context, AdbActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                break;
-            case BROADCAST:
-                intent = new Intent(action);
-                break;
-        }
-        intent.putExtra("widget", appWidgetId);
-        intent.setAction(action);
-        switch (type) {
-            case SERVICE:
-            case ACTIVITY:
-                flags |= PendingIntent.FLAG_UPDATE_CURRENT;
-                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                // this Uri data is to make the PendingIntent unique, so it wont be
-                // updated by FLAG_UPDATE_CURRENT so if there are multiple widget
-                // instances they wont override each other
-                Uri data = Uri.withAppendedPath(
-                        Uri.parse("adbwidget://widget/id/#" + action
-                                + appWidgetId), String.valueOf(appWidgetId));
-                intent.setData(data);
-                break;
-        }
+        flags |= PendingIntent.FLAG_UPDATE_CURRENT;
+        intent.getType();
         switch (type) {
             case SERVICE:
                 return PendingIntent
@@ -306,6 +298,35 @@ public abstract class AdbWidget extends AppWidgetProvider {
                         .getBroadcast(context, 0, intent, flags);
         }
         return null;
+    }
+
+    @NonNull
+    private static Intent makeIntent(Context context, IntentType type,
+                                     String action, int appWidgetId) {
+        Intent intent = null;
+        switch (type) {
+            case SERVICE:
+                intent = new Intent(context, AdbService.class);
+                break;
+            case ACTIVITY:
+                intent = new Intent(context, AdbActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                break;
+            case BROADCAST:
+                intent = new Intent(action);
+                break;
+        }
+        intent.putExtra(AdbService.EXTRA_WIDGET_ID, appWidgetId);
+        intent.setAction(action);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        // this Uri data is to make the PendingIntent unique, so it wont be
+        // updated by FLAG_UPDATE_CURRENT so if there are multiple widget
+        // instances they wont override each other
+        Uri data = Uri.withAppendedPath(
+                Uri.parse("adbwidget://widget/id/#" + action
+                        + appWidgetId), String.valueOf(appWidgetId));
+        intent.setData(data);
+        return intent;
     }
 
     protected abstract int getLayout();

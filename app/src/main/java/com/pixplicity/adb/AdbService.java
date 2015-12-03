@@ -30,6 +30,9 @@ public class AdbService extends Service {
             AdbWidget2.class
     };
 
+    public static final String EXTRA_RESPONSE = "response";
+    public static final String EXTRA_WIDGET_ID = "widget_id";
+
     private volatile boolean mStopped;
     private int mBindings;
 
@@ -50,7 +53,7 @@ public class AdbService extends Service {
      * Source widget ID, if the intent originated from a widget. Otherwise
      * {@code 0}.
      */
-    private int mWidget;
+    private int mWidgetId;
 
     private final Handler handler = new Handler();
 
@@ -134,9 +137,9 @@ public class AdbService extends Service {
         Intent intent = new Intent(AdbControlApp.ACTION_COMPLETE);
         final RootResponse response = AdbControlApp.runRoot(null, this,
                 mClassName, commands);
-        intent.putExtra("response", response);
-        intent.putExtra("widget", mWidget);
-        if (mWidget > 0 && !AdbWidget.HANDLE_RESPONSE) {
+        intent.putExtra(EXTRA_RESPONSE, response);
+        intent.putExtra(EXTRA_WIDGET_ID, mWidgetId);
+        if (mWidgetId > 0 && !AdbWidget.HANDLE_RESPONSE) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -288,9 +291,9 @@ public class AdbService extends Service {
         synchronized (mAction) {
             mAction = intent.getAction();
             mClassName = intent.getStringExtra("class");
-            mWidget = intent.getIntExtra("widget", 0);
+            mWidgetId = intent.getIntExtra(EXTRA_WIDGET_ID, 0);
             Log.v(TAG, "[AdbService] action received: " + mAction
-                    + (mWidget > 0 ? " (from widget " + mWidget + ")" : ""));
+                    + (mWidgetId > 0 ? " (from widget " + mWidgetId + ")" : ""));
         }
         if (AdbControlApp.ACTION_REQUEST_UPDATE.equals(mAction)) {
             update(mAdbProcess);
