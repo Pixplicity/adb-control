@@ -48,7 +48,9 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
     private BroadcastReceiver mReceiver;
     private ProgressDialog mProgress;
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG
@@ -146,20 +148,20 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                                     .getSerializableExtra(AdbService.EXTRA_RESPONSE);
                             Log.i(TAG, "completion result: " + response);
                             switch (response) {
-                            case SUCCESS:
-                                onExecutionFinished(null);
-                                break;
-                            case NO_SU:
-                                onRootNotAvailable(null);
-                                break;
-                            case DENIED1:
-                            case DENIED2:
-                                onRootDenied(null);
-                                break;
-                            default:
-                            case FAILURE:
-                                onExecutionFailure(null);
-                                break;
+                                case SUCCESS:
+                                    onExecutionFinished(null);
+                                    break;
+                                case NO_SU:
+                                    onRootNotAvailable(null);
+                                    break;
+                                case DENIED1:
+                                case DENIED2:
+                                    onRootDenied(null);
+                                    break;
+                                default:
+                                case FAILURE:
+                                    onExecutionFailure(null);
+                                    break;
                             }
                         }
                     }
@@ -177,7 +179,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
             mServiceConnection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name,
-                        IBinder service) {
+                                               IBinder service) {
                     Log.v(TAG, "[AdbActivity] service " + name + " connected: "
                             + service);
                 }
@@ -294,7 +296,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
     @Override
     public void onExecutionFailure(final RootTask execution) {
         Toast.makeText(this, getString(R.string.root_failed), Toast.LENGTH_LONG)
-                .show();
+             .show();
         startMonitoring(false);
     }
 
@@ -302,17 +304,13 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
         if (isFinishing()) {
             return;
         }
-        final AlertDialog.Builder dialog;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            dialog = new AlertDialog.Builder(AdbActivity.this, R.style.AlertDialogStyle);
-        } else {
-            dialog = new AlertDialog.Builder(AdbActivity.this);
-        }
-        dialog.setTitle(R.string.root_title)
-                .setMessage(R.string.root_denied);
+        final AlertDialog.Builder dialog =
+                new AlertDialog.Builder(AdbActivity.this, R.style.AlertDialogStyle)
+                        .setTitle(R.string.root_title)
+                        .setMessage(R.string.root_denied);
         if (execution != null || showHelp) {
             dialog.setPositiveButton(showHelp ? R.string.bt_help1
-                    : R.string.bt_retry,
+                            : R.string.bt_retry,
                     new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -325,7 +323,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                     });
         }
         dialog.setNegativeButton(execution == null ? R.string.bt_ok
-                : R.string.bt_cancel,
+                        : R.string.bt_cancel,
                 new AlertDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
