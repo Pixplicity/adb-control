@@ -99,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
                 android:layout_weight="1"
-                android:text="@string/bt_help1"/>
+                android:text="@string/bt_help1"
+                tools:ignore="RtlHardcoded"/>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_help2"
@@ -107,7 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_weight="1"
-                android:text="@string/bt_help2"/>
+                android:text="@string/bt_help2"
+                tools:ignore="RtlHardcoded"/>
 
         </LinearLayout>
 
