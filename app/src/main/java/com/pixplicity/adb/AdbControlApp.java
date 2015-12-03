@@ -19,12 +19,12 @@ public class AdbControlApp extends Application {
 
     private static final String TAG = AdbControlApp.class.getSimpleName();
 
-    public static final String ACTION_OPEN = "com.pixplicity.adb.OPEN";
-    public static final String ACTION_ENABLE = "com.pixplicity.adb.ENABLE";
-    public static final String ACTION_DISABLE = "com.pixplicity.adb.DISABLE";
-    public static final String ACTION_REQUEST_UPDATE = "com.pixplicity.adb.REQUEST_UPDATE";
-    public static final String ACTION_UPDATED = "com.pixplicity.adb.UPDATED";
-    public static final String ACTION_COMPLETE = "com.pixplicity.adb.COMPLETE";
+    public static final String ACTION_OPEN = BuildConfig.APPLICATION_ID + ".OPEN";
+    public static final String ACTION_ENABLE = BuildConfig.APPLICATION_ID + ".ENABLE";
+    public static final String ACTION_DISABLE = BuildConfig.APPLICATION_ID + ".DISABLE";
+    public static final String ACTION_REQUEST_UPDATE = BuildConfig.APPLICATION_ID + ".REQUEST_UPDATE";
+    public static final String ACTION_UPDATED = BuildConfig.APPLICATION_ID + ".UPDATED";
+    public static final String ACTION_COMPLETE = BuildConfig.APPLICATION_ID + ".COMPLETE";
     public static final String ACTION_IDLE = "";
 
     protected static final long REFRESH_INTERVAL = 30000;

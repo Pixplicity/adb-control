@@ -50,12 +50,9 @@ public abstract class AdbWidget extends AppWidgetProvider {
             context.startService(intent);
         }
 
-        Log.d(TAG, "update widgets");
-
         // Perform this loop procedure for each App Widget that belongs to this
         // provider
         for (int appWidgetId : appWidgetIds) {
-            Log.d(TAG, "update widget " + appWidgetId);
             if (USE_ALARMS) {
                 setAlarm(context, appWidgetId, true);
             }
@@ -73,6 +70,17 @@ public abstract class AdbWidget extends AppWidgetProvider {
     }
 
     private void updateRemoteViews(Context context, int appWidgetId, RemoteViews views) {
+        if (appWidgetId == -1) {
+            int[] appWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(
+                    new ComponentName(context.getApplicationContext(), getClass()));
+            for (int widgetId : appWidgetIds) {
+                updateRemoteViews(context, widgetId, views);
+            }
+            return;
+        }
+
+        Log.d(TAG, "update widget " + appWidgetId);
+
         // Faster operation for HC and up
         if (false && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             views.setOnClickFillInIntent(
@@ -105,7 +113,8 @@ public abstract class AdbWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        updateStatus(context, 0, 0, null);
+        Log.i(TAG, "enabled");
+        updateStatus(context, 0, -1, null);
     }
 
     @Override
@@ -113,7 +122,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
         if (USE_ALARMS) {
             setAlarm(context, -1, false);
         } else {
-            Log.i(TAG, "[AdbWidget] disabled");
+            Log.i(TAG, "disabled");
             // FIXME We don't know if other widgets are running; how do we
             // manage stopping the service?
             /*
@@ -131,7 +140,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
                 setAlarm(context, appWidgetId, false);
             }
         } else {
-            Log.d(TAG, "[AdbWidget] deleted: " + Arrays.toString(appWidgetIds));
+            Log.d(TAG, "deleted: " + Arrays.toString(appWidgetIds));
             Intent intent = new Intent(AdbControlApp.ACTION_REQUEST_UPDATE);
             intent.putExtra("widgets-remove", appWidgetIds);
             context.sendBroadcast(intent);
@@ -148,29 +157,29 @@ public abstract class AdbWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.i(TAG, "[AdbWidget] received action " + action);
-        int widgetId = intent.getIntExtra(AdbService.EXTRA_WIDGET_ID, 0);
+        Log.i(TAG, "received action " + action);
+        int appWidgetId = intent.getIntExtra(AdbService.EXTRA_WIDGET_ID, -1);
         if (AdbControlApp.ACTION_UPDATED.equals(action)) {
-            updateAdb(context, intent.getStringExtra("pid"));
+            updateAdb(context, appWidgetId, intent.getStringExtra("pid"));
         } else if (AdbControlApp.ACTION_COMPLETE.equals(action)) {
-            updateStatus(context, 0, widgetId,
+            updateStatus(context, 0, appWidgetId,
                     (RootResponse) intent.getSerializableExtra(AdbService.EXTRA_RESPONSE));
         } else if (AdbControlApp.ACTION_ENABLE.equals(action)
                 || AdbControlApp.ACTION_DISABLE.equals(action)) {
-            updateStatus(context, 1, widgetId, null);
+            updateStatus(context, 1, appWidgetId, null);
         } else {
             super.onReceive(context, intent);
         }
     }
 
-    protected void updateAdb(Context context, String pid) {
+    protected void updateAdb(Context context, int appWidgetId, String pid) {
         AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(context);
 
         // Get the layout for the App Widget and attach an on-click listener
         // to the button
         RemoteViews views = new RemoteViews(context.getPackageName(), getLayout());
-        updateRemoteViews(context, 0, views);
+        updateRemoteViews(context, appWidgetId, views);
 
         final int resImg, resText;
         if (pid == null) {
@@ -195,7 +204,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(comp, views);
     }
 
-    protected void updateStatus(Context context, int buttonBusy, int widgetId,
+    protected void updateStatus(Context context, int buttonBusy, int appWidgetId,
                                 RootResponse response) {
         AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(context);
@@ -203,7 +212,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
         // Get the layout for the App Widget and attach an on-click listener
         // to the button
         RemoteViews views = new RemoteViews(context.getPackageName(), getLayout());
-        updateRemoteViews(context, 0, views);
+        updateRemoteViews(context, appWidgetId, views);
 
         switch (buttonBusy) {
             case 1:
@@ -214,7 +223,7 @@ public abstract class AdbWidget extends AppWidgetProvider {
                 views.setViewVisibility(R.id.progress, View.VISIBLE);
                 break;
             default:
-                if ((HANDLE_RESPONSE || widgetId == 0) && response != null) {
+                if (HANDLE_RESPONSE && response != null) {
                     switch (response) {
                         case SUCCESS:
                             break;
