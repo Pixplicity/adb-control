@@ -1,75 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pixplicity.adb"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<manifest package="com.pixplicity.adb"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="7"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="14"/>
 
     <permission
         android:name="com.pixplicity.adb.ADB_CONTROL"
         android:label="@string/permission"
-        android:protectionLevel="signature" />
+        android:protectionLevel="signature"/>
 
-    <uses-permission android:name="com.pixplicity.adb.ADB_CONTROL" />
+    <uses-permission android:name="com.pixplicity.adb.ADB_CONTROL"/>
 
     <application
         android:name=".AdbControlApp"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
         <receiver
             android:name=".widget.AdbWidget1"
             android:exported="true"
             android:icon="@drawable/ic_launcher"
             android:label="@string/widget1_name"
-            android:permission="com.pixplicity.adb.ADB_CONTROL" >
+            android:permission="com.pixplicity.adb.ADB_CONTROL">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
-                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
-                <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
-                <action android:name="com.pixplicity.adb.ENABLE" />
-                <action android:name="com.pixplicity.adb.DISABLE" />
-                <action android:name="com.pixplicity.adb.COMPLETE" />
-                <action android:name="com.pixplicity.adb.UPDATED" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED"/>
+                <action android:name="com.pixplicity.adb.ENABLE"/>
+                <action android:name="com.pixplicity.adb.DISABLE"/>
+                <action android:name="com.pixplicity.adb.COMPLETE"/>
+                <action android:name="com.pixplicity.adb.UPDATED"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/adbwidget1" />
+                android:resource="@xml/adbwidget1"/>
         </receiver>
         <receiver
             android:name=".widget.AdbWidget2"
             android:exported="true"
             android:icon="@drawable/ic_launcher"
             android:label="@string/widget2_name"
-            android:permission="com.pixplicity.adb.ADB_CONTROL" >
+            android:permission="com.pixplicity.adb.ADB_CONTROL">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="android.appwidget.action.APPWIDGET_ENABLED" />
-                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
-                <action android:name="android.appwidget.action.APPWIDGET_DISABLED" />
-                <action android:name="com.pixplicity.adb.ENABLE" />
-                <action android:name="com.pixplicity.adb.DISABLE" />
-                <action android:name="com.pixplicity.adb.COMPLETE" />
-                <action android:name="com.pixplicity.adb.UPDATED" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DELETED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED"/>
+                <action android:name="com.pixplicity.adb.ENABLE"/>
+                <action android:name="com.pixplicity.adb.DISABLE"/>
+                <action android:name="com.pixplicity.adb.COMPLETE"/>
+                <action android:name="com.pixplicity.adb.UPDATED"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/adbwidget2" />
+                android:resource="@xml/adbwidget2"/>
         </receiver>
 
         <service
             android:name=".AdbService"
             android:exported="true"
             android:permission="com.pixplicity.adb.ADB_CONTROL"
-            android:stopWithTask="true" >
+            android:stopWithTask="true">
             <intent-filter>
-                <action android:name="com.pixplicity.adb.ENABLE" />
-                <action android:name="com.pixplicity.adb.DISABLE" />
+                <action android:name="com.pixplicity.adb.ENABLE"/>
+                <action android:name="com.pixplicity.adb.DISABLE"/>
             </intent-filter>
         </service>
 
@@ -77,20 +78,20 @@
             android:name=".AdbActivity"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
-            android:launchMode="singleInstance" >
+            android:launchMode="singleInstance">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="com.pixplicity.adb.OPEN" />
+                <action android:name="com.pixplicity.adb.OPEN"/>
             </intent-filter>
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="cb7ab6c28552bf25b9c45e17100b55d0e3a8686a" />
+            android:value="cb7ab6c28552bf25b9c45e17100b55d0e3a8686a"/>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

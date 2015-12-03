@@ -1,6 +1,5 @@
 package com.pixplicity.adb;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -19,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.pixplicity.adb.ProcessInfo.PsRow;
 import com.pixplicity.adb.RootTask.RootExecListener;
 
-public class AdbActivity extends Activity implements RootExecListener {
+public class AdbActivity extends AppCompatActivity implements RootExecListener {
 
     private static final String TAG = AdbActivity.class.getSimpleName();
 
