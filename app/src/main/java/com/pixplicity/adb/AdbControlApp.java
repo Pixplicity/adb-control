@@ -134,12 +134,13 @@ public class AdbControlApp extends Application {
                     // The thread was interrupted; assume success
                     retval = RootResponse.SUCCESS;
                 } catch (Exception ex) {
+                    Crashlytics.logException(ex);
                     Log.e(TAG, "Error executing root action", ex);
                     retval = RootResponse.FAILURE;
                 }
             }
         } catch (IOException ex) {
-            Log.w("Can't get root access", ex);
+            Log.w(TAG, "Can't get root access", ex);
             if (ex.getMessage().contains("EPIPE")
                     || ex.getMessage().contains("Error running exec")) {
                 retval = RootResponse.NO_SU;
@@ -147,10 +148,11 @@ public class AdbControlApp extends Application {
                 retval = RootResponse.DENIED1;
             }
         } catch (SecurityException ex) {
-            Log.w("Can't get root access", ex);
+            Log.w(TAG, "Can't get root access", ex);
             retval = RootResponse.DENIED2;
         } catch (Exception ex) {
-            Log.w("Error executing internal operation", ex);
+            Crashlytics.logException(ex);
+            Log.w(TAG, "Error executing internal operation", ex);
             retval = RootResponse.FAILURE;
         }
         return retval;

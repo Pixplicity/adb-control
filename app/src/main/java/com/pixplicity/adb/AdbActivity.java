@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -212,10 +213,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                         pi.execute();
                         PsRow process = pi.getPsRow("/sbin/adbd");
                         publishProgress(process);
-                        try {
-                            Thread.sleep(AdbControlApp.REFRESH_INTERVAL);
-                        } catch (InterruptedException e) {
-                        }
+                        SystemClock.sleep(AdbControlApp.REFRESH_INTERVAL);
                     }
                     return null;
                 }

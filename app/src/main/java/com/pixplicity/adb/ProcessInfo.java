@@ -3,6 +3,7 @@ package com.pixplicity.adb;
 import java.util.ArrayList;
 
 public class ProcessInfo {
+
     private ArrayList<PsRow> pslist;
     private static String rootpid = null;
 
@@ -14,7 +15,6 @@ public class ProcessInfo {
         String[] lines = ps.split("\n");
         pslist = new ArrayList<PsRow>();
         for (String line : lines) {
-            // Log.v(line);
             PsRow row = new PsRow(line);
             if (row.pid != null) {
                 pslist.add(row);

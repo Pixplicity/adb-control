@@ -2,5 +2,6 @@
 <resources>
 
     <color name="accent">#94ce26</color>
+    <color name="text_dark">#000000</color>
 
 </resources>

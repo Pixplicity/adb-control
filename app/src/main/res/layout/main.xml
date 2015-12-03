@@ -20,45 +20,54 @@
             android:padding="6dp"
             android:text="@string/description"/>
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/bg_box"
-            android:padding="16dp">
+            android:layout_margin="16dp">
 
-            <ProgressBar
-                android:id="@+id/pb_adb"
-                style="?android:attr/progressBarStyleSmall"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:padding="6dp"/>
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/lb_adb1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:padding="6dp"
-                android:text="@string/adb_checking"
-                android:textStyle="bold"/>
+                <ProgressBar
+                    android:id="@+id/pb_adb"
+                    style="?android:attr/progressBarStyleInverse"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_margin="-16dp"
+                    android:padding="6dp"/>
 
-            <TextView
-                android:id="@+id/lb_adb2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:padding="6dp"
-                android:visibility="gone"
-                tools:text="pid 123"
-                tools:visibility="visible"/>
+                <TextView
+                    android:id="@+id/lb_adb1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:padding="6dp"
+                    android:text="@string/adb_checking"
+                    android:textColor="@color/text_dark"
+                    android:textStyle="bold"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/lb_adb2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:padding="6dp"
+                    android:textColor="@color/text_dark"
+                    android:visibility="gone"
+                    tools:text="pid 123"
+                    tools:visibility="visible"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_enable"
