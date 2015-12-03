@@ -21,6 +21,8 @@
     <string name="bt_ok">OK</string>
     <string name="permission">Allows the application to control debug mode without your intervention. Debug mode can be used to copy data between your computer and your device, install applications on your device without notification, and read log data.</string>
 
+    <string name="info_link">More open source from Pixplicity:\nhttp://github.com/Pixplicity</string>
+
     <!-- Widgets -->
     <string name="widget1_name">ADB Control (1 button)</string>
     <string name="widget2_name">ADB Control (2 buttons)</string>

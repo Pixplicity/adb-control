@@ -57,6 +57,7 @@
                 android:visibility="gone"
                 tools:text="pid 123"
                 tools:visibility="visible"/>
+
         </RelativeLayout>
 
         <android.support.v7.widget.AppCompatButton
@@ -89,7 +90,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_help1"
@@ -106,7 +108,17 @@
                 android:layout_marginLeft="3dp"
                 android:layout_weight="1"
                 android:text="@string/bt_help2"/>
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:padding="8dp"
+            android:text="@string/info_link"/>
+
     </LinearLayout>
 
 </ScrollView>
