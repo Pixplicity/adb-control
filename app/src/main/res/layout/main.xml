@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -11,9 +12,15 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <include layout="@layout/header"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical|start"
+            android:padding="6dp"
+            android:text="@string/description"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -25,6 +32,8 @@
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_gravity="center"
                 android:padding="6dp"/>
 
@@ -32,8 +41,8 @@
                 android:id="@+id/lb_adb1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="top|left"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:padding="6dp"
                 android:text="@string/adb_checking"
                 android:textStyle="bold"/>
@@ -42,10 +51,13 @@
                 android:id="@+id/lb_adb2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="top|right"
-                android:padding="6dp"/>
-        </LinearLayout>
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:padding="6dp"
+                android:visibility="gone"
+                tools:text="pid 123"
+                tools:visibility="visible"/>
+        </RelativeLayout>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_enable"

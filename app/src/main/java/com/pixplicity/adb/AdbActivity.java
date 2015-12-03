@@ -78,6 +78,10 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
         mLbAdb1 = (TextView) findViewById(R.id.lb_adb1);
         mLbAdb2 = (TextView) findViewById(R.id.lb_adb2);
 
+        mPbAdb.setVisibility(View.VISIBLE);
+        mLbAdb1.setText(R.string.adb_checking);
+        mLbAdb2.setVisibility(View.GONE);
+
         mBtnEnable.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,6 +261,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                     null, null, null);
             mLbAdb1.setText(R.string.adb_not_running);
             mLbAdb2.setText("");
+            mLbAdb2.setVisibility(View.GONE);
         } else {
             mBtnEnable.setText(R.string.bt_restart);
             mBtnEnable.setCompoundDrawablesWithIntrinsicBounds(
@@ -264,6 +269,7 @@ public class AdbActivity extends AppCompatActivity implements RootExecListener {
                     null, null, null);
             mLbAdb1.setText(R.string.adb_running);
             mLbAdb2.setText(String.format(getString(R.string.pid), pid));
+            mLbAdb2.setVisibility(View.VISIBLE);
         }
     }
 
